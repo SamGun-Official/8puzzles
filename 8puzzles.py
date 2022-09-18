@@ -1,10 +1,5 @@
 from collections import deque
 
-factorial = [40320]
-
-for i in range(8, 0, -1):
-    factorial.append(factorial[-1] // i)
-
 def convertStateToInteger(state):
     storage = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     val = 0
@@ -28,13 +23,51 @@ def convertIntegerToState(stateInteger):
 
     return state
 
-def printState(stateInteger):
-    state = convertIntegerToState(stateInteger)
+def printState(state, counter):
+    if(counter == 0):
+        print("Initial State")
+    elif(found == counter):
+        print("Iteration", counter, "/ Goal State")
+    else:
+        print("Iteration", counter)
+
     print(state[0], state[1], state[2])
     print(state[3], state[4], state[5])
     print(state[6], state[7], state[8])
+    print("")
+
+def getNextStateInteger(direction, zeroIndex):
+    index = -99
+
+    if(direction == "LEFT"):
+        index = zeroIndex - 1
+    elif(direction == "RIGHT"):
+        index = zeroIndex + 1
+    elif(direction == "TOP"):
+        index = zeroIndex - 3
+    elif(direction == "BOTTOM"):
+        index = zeroIndex + 3
+
+    temp = currentState[zeroIndex]
+    currentState[zeroIndex] = currentState[index]
+    currentState[index] = temp
+
+    nextStateInteger = convertStateToInteger(currentState)
+    if(visited[nextStateInteger] == -1):
+        visited[nextStateInteger] = currentStateInteger
+        queue.append(nextStateInteger)
+
+    temp = currentState[zeroIndex]
+    currentState[zeroIndex] = currentState[index]
+    currentState[index] = temp
 
 visited = [-1 for _ in range(362880)]
+factorial = [40320]
+output = []
+
+for i in range(8, 0, -1):
+    factorial.append(factorial[-1] // i)
+
 initialState = [
     8, 3, 5,
     4, 1, 6,
@@ -61,64 +94,19 @@ while(len(queue) > 0):
     y = zeroIndex // 3
 
     if(x > 0):
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex - 1]
-        currentState[zeroIndex - 1] = temp
-
-        nextStateInteger = convertStateToInteger(currentState)
-        if(visited[nextStateInteger] == -1):
-            visited[nextStateInteger] = currentStateInteger
-            queue.append(nextStateInteger)
-
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex - 1]
-        currentState[zeroIndex - 1] = temp
-
+        getNextStateInteger("LEFT", zeroIndex)
     if(x < 2):
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex + 1]
-        currentState[zeroIndex + 1] = temp
-
-        nextStateInteger = convertStateToInteger(currentState)
-        if(visited[nextStateInteger] == -1):
-            visited[nextStateInteger] = currentStateInteger
-            queue.append(nextStateInteger)
-
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex + 1]
-        currentState[zeroIndex + 1] = temp
-
+        getNextStateInteger("RIGHT", zeroIndex)
     if(y > 0):
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex - 3]
-        currentState[zeroIndex - 3] = temp
-
-        nextStateInteger = convertStateToInteger(currentState)
-        if(visited[nextStateInteger] == -1):
-            visited[nextStateInteger] = currentStateInteger
-            queue.append(nextStateInteger)
-
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex - 3]
-        currentState[zeroIndex - 3] = temp
-
+        getNextStateInteger("TOP", zeroIndex)
     if(y < 2):
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex + 3]
-        currentState[zeroIndex + 3] = temp
-
-        nextStateInteger = convertStateToInteger(currentState)
-        if(visited[nextStateInteger] == -1):
-            visited[nextStateInteger] = currentStateInteger
-            queue.append(nextStateInteger)
-
-        temp = currentState[zeroIndex]
-        currentState[zeroIndex] = currentState[zeroIndex + 3]
-        currentState[zeroIndex + 3] = temp
+        getNextStateInteger("BOTTOM", zeroIndex)
 
 currentStateInteger = goalStateInteger
 while(currentStateInteger != -2):
-    # print(currentStateInteger)
-    printState(currentStateInteger)
-    print("")
+    output.append(convertIntegerToState(currentStateInteger))
     currentStateInteger = visited[currentStateInteger]
+
+found = len(output) - 1
+for _ in range(len(output)):
+    printState(output.pop(), _)
