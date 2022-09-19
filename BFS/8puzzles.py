@@ -1,6 +1,14 @@
 from collections import deque
 import os
 
+def parseInput(userInput):
+    state = userInput.split(" ")
+
+    for i in range(len(state)):
+        state[i] = int(state[i])
+
+    return state
+
 def convertStateToInteger(state):
     storage = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     val = 0
@@ -23,6 +31,31 @@ def convertIntegerToState(stateInteger):
         storage.pop(index)
 
     return state
+
+def getNextStateInteger(direction, zeroIndex):
+    index = -99
+
+    if(direction == "LEFT"):
+        index = zeroIndex - 1
+    elif(direction == "RIGHT"):
+        index = zeroIndex + 1
+    elif(direction == "TOP"):
+        index = zeroIndex - 3
+    elif(direction == "BOTTOM"):
+        index = zeroIndex + 3
+
+    temp = currentState[zeroIndex]
+    currentState[zeroIndex] = currentState[index]
+    currentState[index] = temp
+
+    nextStateInteger = convertStateToInteger(currentState)
+    if(visited[nextStateInteger] == -1):
+        visited[nextStateInteger] = currentStateInteger
+        queue.append(nextStateInteger)
+
+    temp = currentState[zeroIndex]
+    currentState[zeroIndex] = currentState[index]
+    currentState[index] = temp
 
 def printState(state, counter, f = None):
     print("---------------------", file=f)
@@ -51,30 +84,8 @@ def printState(state, counter, f = None):
         print("          |          ", file=f)
         print("          V          ", end="\n", file=f)
 
-def getNextStateInteger(direction, zeroIndex):
-    index = -99
-
-    if(direction == "LEFT"):
-        index = zeroIndex - 1
-    elif(direction == "RIGHT"):
-        index = zeroIndex + 1
-    elif(direction == "TOP"):
-        index = zeroIndex - 3
-    elif(direction == "BOTTOM"):
-        index = zeroIndex + 3
-
-    temp = currentState[zeroIndex]
-    currentState[zeroIndex] = currentState[index]
-    currentState[index] = temp
-
-    nextStateInteger = convertStateToInteger(currentState)
-    if(visited[nextStateInteger] == -1):
-        visited[nextStateInteger] = currentStateInteger
-        queue.append(nextStateInteger)
-
-    temp = currentState[zeroIndex]
-    currentState[zeroIndex] = currentState[index]
-    currentState[index] = temp
+initInput = input("Enter initial state (Separated by whitespace): ")
+initGoal = input("Enter goal state (Separated by whitespace): ")
 
 visited = [-1 for _ in range(362880)]
 factorial = [40320]
@@ -83,19 +94,10 @@ output = []
 for i in range(8, 0, -1):
     factorial.append(factorial[-1] // i)
 
-initialState = [
-    8, 6, 7,
-    2, 5, 4,
-    3, 0, 1,
-]
-goalState = [
-    1, 2, 3,
-    4, 5, 6,
-    7, 8, 0,
-]
-
-goalStateInteger = convertStateToInteger(goalState)
+initialState = parseInput(initInput)
+goalState = parseInput(initGoal)
 initialStateInteger = convertStateToInteger(initialState)
+goalStateInteger = convertStateToInteger(goalState)
 queue = deque([initialStateInteger])
 visited[initialStateInteger] = -2
 
