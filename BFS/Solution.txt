@@ -1,0 +1,74 @@
+Initial State
+8 3 5
+4 1 6
+2 7 0
+
+Iteration 1
+8 3 5
+4 1 0
+2 7 6
+
+Iteration 2
+8 3 0
+4 1 5
+2 7 6
+
+Iteration 3
+8 0 3
+4 1 5
+2 7 6
+
+Iteration 4
+8 1 3
+4 0 5
+2 7 6
+
+Iteration 5
+8 1 3
+0 4 5
+2 7 6
+
+Iteration 6
+8 1 3
+2 4 5
+0 7 6
+
+Iteration 7
+8 1 3
+2 4 5
+7 0 6
+
+Iteration 8
+8 1 3
+2 4 5
+7 6 0
+
+Iteration 9
+8 1 3
+2 4 0
+7 6 5
+
+Iteration 10
+8 1 3
+2 0 4
+7 6 5
+
+Iteration 11
+8 1 3
+0 2 4
+7 6 5
+
+Iteration 12
+0 1 3
+8 2 4
+7 6 5
+
+Iteration 13
+1 0 3
+8 2 4
+7 6 5
+
+Iteration 14 / Goal State
+1 2 3
+8 0 4
+7 6 5
