@@ -1,4 +1,5 @@
 from collections import deque
+import os
 
 def convertStateToInteger(state):
     storage = [0, 1, 2, 3, 4, 5, 6, 7, 8]
@@ -23,18 +24,18 @@ def convertIntegerToState(stateInteger):
 
     return state
 
-def printState(state, counter):
+def printState(state, counter, f = None):
     if(counter == 0):
-        print("Initial State")
+        print("Initial State", file=f)
     elif(found == counter):
-        print("Iteration", counter, "/ Goal State")
+        print("Iteration", counter, "/ Goal State", file=f)
     else:
-        print("Iteration", counter)
+        print("Iteration", counter, file=f)
 
-    print(state[0], state[1], state[2])
-    print(state[3], state[4], state[5])
-    print(state[6], state[7], state[8])
-    print("")
+    print(state[0], state[1], state[2], file=f)
+    print(state[3], state[4], state[5], file=f)
+    print(state[6], state[7], state[8], file=f)
+    print("", file=f)
 
 def getNextStateInteger(direction, zeroIndex):
     index = -99
@@ -107,6 +108,16 @@ while(currentStateInteger != -2):
     output.append(convertIntegerToState(currentStateInteger))
     currentStateInteger = visited[currentStateInteger]
 
+filePath = "Solution.txt";
+try:
+    os.remove(filePath)
+except:
+    print("")
+
 found = len(output) - 1
-for _ in range(len(output)):
-    printState(output.pop(), _)
+fetched = ""
+for i in range(len(output)):
+    fetched = output.pop()
+    printState(fetched, i)
+    with open("Solution.txt", "a") as f:
+        printState(fetched, i, f)
