@@ -25,17 +25,31 @@ def convertIntegerToState(stateInteger):
     return state
 
 def printState(state, counter, f = None):
-    if(counter == 0):
-        print("Initial State", file=f)
-    elif(found == counter):
-        print("Iteration", counter, "/ Goal State", file=f)
-    else:
-        print("Iteration", counter, file=f)
+    print("---------------------", file=f)
 
-    print(state[0], state[1], state[2], file=f)
-    print(state[3], state[4], state[5], file=f)
-    print(state[6], state[7], state[8], file=f)
-    print("", file=f)
+    if(counter == 0):
+        print("|   Initial State   |", file=f)
+    else:
+        print("| Iterations", ("%06d" % counter), "|", file=f)
+        if(found == counter):
+            print("---------------------", file=f)
+            print("|    Goal/Result    |", file=f)
+
+    print("---------------------", file=f)
+    print("|   -------------   |", file=f)
+    print("|   |", state[0], "|", state[1], "|", state[2], "|   |", file=f)
+    print("|   -------------   |", file=f)
+    print("|   |", state[3], "|", state[4], "|", state[5], "|   |", file=f)
+    print("|   -------------   |", file=f)
+    print("|   |", state[6], "|", state[7], "|", state[8], "|   |", file=f)
+    print("|   -------------   |", file=f)
+
+    if(found == counter):
+        print("---------------------", end="\n", file=f)
+    else:
+        print("---------------------", file=f)
+        print("          |          ", file=f)
+        print("          V          ", end="\n", file=f)
 
 def getNextStateInteger(direction, zeroIndex):
     index = -99
@@ -70,14 +84,14 @@ for i in range(8, 0, -1):
     factorial.append(factorial[-1] // i)
 
 initialState = [
-    8, 3, 5,
-    4, 1, 6,
-    2, 7, 0,
+    8, 6, 7,
+    2, 5, 4,
+    3, 0, 1,
 ]
 goalState = [
     1, 2, 3,
-    8, 0, 4,
-    7, 6, 5,
+    4, 5, 6,
+    7, 8, 0,
 ]
 
 goalStateInteger = convertStateToInteger(goalState)
@@ -85,6 +99,7 @@ initialStateInteger = convertStateToInteger(initialState)
 queue = deque([initialStateInteger])
 visited[initialStateInteger] = -2
 
+print("Solving...")
 while(len(queue) > 0):
     currentStateInteger = queue.popleft()
     if(currentStateInteger == goalStateInteger):
@@ -108,14 +123,16 @@ while(currentStateInteger != -2):
     output.append(convertIntegerToState(currentStateInteger))
     currentStateInteger = visited[currentStateInteger]
 
+found = len(output) - 1
+fetched = ""
+
 filePath = "Solution.txt";
 try:
     os.remove(filePath)
 except:
-    print("")
+    pass
 
-found = len(output) - 1
-fetched = ""
+print("Solved!")
 for i in range(len(output)):
     fetched = output.pop()
     printState(fetched, i)
