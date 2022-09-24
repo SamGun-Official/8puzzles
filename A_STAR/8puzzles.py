@@ -8,11 +8,12 @@ goal_state = [1,2,3,
 7,8,0]
 n = 3
 
-def AStar_search(given_state , n):
+def AStar_search(given_state, goal_state, n):
     frontier = PriorityQueue()
     explored = []
     counter = 0
     root = State(given_state, None, None, 0, 0)
+    root.goal = goal_state
     evaluation = root.Manhattan_Distance(n)
     frontier.put((evaluation[1], counter, root))
 
@@ -114,7 +115,7 @@ class State:
         return solution
 
 
-AStar_solution = AStar_search(initial_state, 3)
+AStar_solution = AStar_search(initial_state, goal_state, 3)
 for state in AStar_solution[0]:
     print("---------------------")
     print("|   -------------   |")
