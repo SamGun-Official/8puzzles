@@ -148,6 +148,7 @@ goal_state = parseInput(input("Enter goal state (Separated by whitespace): "))
 #     7, 8, 0
 # ]
 
+print("Solving...")
 AStar_solution = AStar_search(initial_state, goal_state, n)
 AStar_solution[0].append(goal_state)
 found = len(AStar_solution[0]) - 1
@@ -158,6 +159,7 @@ try:
 except:
     pass
 
+print("Solved!")
 for state in AStar_solution[0]:
     printState(state, i)
     with open("Solution.txt", "a") as f:
